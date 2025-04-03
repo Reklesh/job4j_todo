@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:include="fragments/header :: header"></head>
+<body>
+<div th:replace="fragments/navigation :: navigation"></div>
+<div class="container mt-3">
+    <div class="mb-3">
+        <label class="form-label"><b>Название</b></label>
+        <div class="form-control" th:text="${task.name}">Название задачи</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label"><b>Описание</b></label>
+        <div class="form-control" th:text="${task.description}">Описание задачи</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label"><b>Дата создания</b></label>
+        <div class="form-control"
+             th:text="${#temporals.format(task.created, 'dd.MM.yyyy HH:mm')}">Дата создания задачи
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label"><b>Состояние</b></label>
+        <div class="form-control">
+            <span th:text="${task.done} ? 'Выполнено' : 'Не выполнено'"></span>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-6"></div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4">
+                    <form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
+                        <button type="submit" class="btn w-100"
+                                th:classappend="${task.done} ? 'btn-light disabled' : 'btn-success'"
+                                th:disabled="${task.done}">
+                            <span th:text="${task.done} ? 'Выполнено' : 'Выполнить'"></span>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary w-100" th:href="@{/tasks/{id}/update(id=${task.id})}">Редактировать</a>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-danger w-100" th:href="@{/tasks/{id}/delete(id=${task.id})}">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
