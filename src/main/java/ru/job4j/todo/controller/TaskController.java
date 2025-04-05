@@ -1,14 +1,16 @@
 package ru.job4j.todo.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
-import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.task.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tasks")
@@ -17,9 +19,16 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public String getAll(@RequestParam(required = false) String filter, Model model) {
-        model.addAttribute("tasks", taskService.findAll(filter));
-        return "tasks/list";
+    public String getAll(@RequestParam(name = "filter", defaultValue = "all") String filter, Model model) {
+        try {
+            model.addAttribute("tasks", taskService.findAll(filter));
+            return "tasks/list";
+        } catch (IllegalStateException e) {
+            log.error("Ошибка при фильтрации задач: {}", filter, e);
+            model.addAttribute(
+                    "message", "Не удалось загрузить список задач. Попробуйте позже.");
+            return "errors/404";
+        }
     }
 
     @GetMapping("/create")
@@ -45,8 +54,9 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/complete")
-    public String executeTask(@PathVariable int id, Model model) {
-       var isTaskCompleted = taskService.markAsDone(id);
+    public String executeTask(@PathVariable int id, @RequestParam boolean currentStatus, Model model) {
+        boolean newStatus = !currentStatus;
+        var isTaskCompleted = taskService.updateDone(id, newStatus);
         if (!isTaskCompleted) {
             model.addAttribute("message", "Задача с указанным идентификатором не найдена");
             return "errors/404";
@@ -65,8 +75,13 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(@PathVariable int id) {
-        taskService.deleteById(id);
+    public String delete(@PathVariable int id, Model model) {
+        var isDeleted = taskService.deleteById(id);
+        if (!isDeleted) {
+            model.addAttribute("message",
+                    "Задача с указанным идентификатором не найдена");
+            return "errors/404";
+        }
         return "redirect:/tasks";
     }
 }

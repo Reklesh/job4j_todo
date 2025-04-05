@@ -30,6 +30,7 @@
             <div class="row">
                 <div class="col-4">
                     <form th:action="@{/tasks/{id}/complete(id=${task.id})}" method="post">
+                        <input type="hidden" name="currentStatus" th:value="${task.done}">
                         <button type="submit" class="btn w-100"
                                 th:classappend="${task.done} ? 'btn-light disabled' : 'btn-success'"
                                 th:disabled="${task.done}">

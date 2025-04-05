@@ -1,4 +1,4 @@
-package ru.job4j.todo.repository;
+package ru.job4j.todo.repository.task;
 
 import ru.job4j.todo.model.Task;
 
@@ -10,9 +10,11 @@ public interface TaskRepository {
 
     Task save(Task task);
 
-    void deleteById(Integer id);
+    boolean deleteById(Integer id);
 
     boolean update(Task task);
+
+    boolean updateDone(Integer id, boolean isDone);
 
     Optional<Task> findById(Integer id);
 

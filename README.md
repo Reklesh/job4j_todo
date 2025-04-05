@@ -10,18 +10,19 @@
 Так же есть страницы с регистрацией и аутентификацией пользователя.
 ***
 ## В данном проекте используются:
-Java 17, Spring Boot 2.7.3, Thymeleaf 2.7.3,
-
-Bootstrap 4.1.3, Liquibase 4.28.0, Hibernate 5.6.11,
-
-Lombok 1.18.36, PostgreSQL 16
+* Java 17, 
+* Spring Boot 2.7.3, 
+* Thymeleaf 2.7.3,
+* Bootstrap 4.1.3, 
+* Liquibase 4.28.0, 
+* Hibernate 5.6.11,
+* Lombok 1.18.36, 
+* PostgreSQL 16.
 ***
 ## Требования к окружению:
-Java 17
-
-Maven 3.10
-
-PostgreSQL 16
+* Java 17,
+* Maven 3.10,
+* PostgreSQL 16.
 ***
 ## Запуск проекта:
 1. Скачиваете проект из данного репозитория

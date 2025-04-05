@@ -1,4 +1,4 @@
-package ru.job4j.todo.service;
+package ru.job4j.todo.service.task;
 
 import ru.job4j.todo.model.Task;
 
@@ -9,7 +9,7 @@ public interface TaskService {
 
     Task save(Task task);
 
-    void deleteById(Integer id);
+    boolean deleteById(Integer id);
 
     boolean update(Task task);
 
@@ -17,5 +17,5 @@ public interface TaskService {
 
     Collection<Task> findAll(String filter);
 
-    boolean markAsDone(Integer id);
+    boolean updateDone(Integer id, boolean isDone);
 }
