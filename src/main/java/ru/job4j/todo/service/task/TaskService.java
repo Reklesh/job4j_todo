@@ -15,7 +15,11 @@ public interface TaskService {
 
     Optional<Task> findById(Integer id);
 
-    Collection<Task> findAll(String filter);
+    Collection<Task> findAll();
+
+    Collection<Task> findCompleted();
+
+    Collection<Task> findNew();
 
     boolean updateDone(Integer id, boolean isDone);
 }

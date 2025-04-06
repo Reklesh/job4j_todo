@@ -1,7 +1,6 @@
 package ru.job4j.todo.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import ru.job4j.todo.service.task.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Slf4j
 @Controller
 @AllArgsConstructor
 @RequestMapping("/tasks")
@@ -19,16 +17,21 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public String getAll(@RequestParam(name = "filter", defaultValue = "all") String filter, Model model) {
-        try {
-            model.addAttribute("tasks", taskService.findAll(filter));
-            return "tasks/list";
-        } catch (IllegalStateException e) {
-            log.error("Ошибка при фильтрации задач: {}", filter, e);
-            model.addAttribute(
-                    "message", "Не удалось загрузить список задач. Попробуйте позже.");
-            return "errors/404";
-        }
+    public String getAll(Model model) {
+        model.addAttribute("tasks", taskService.findAll());
+        return "tasks/list";
+    }
+
+    @GetMapping("/completed")
+    public String getCompleted(Model model) {
+        model.addAttribute("tasks", taskService.findCompleted());
+        return "tasks/list";
+    }
+
+    @GetMapping("/new")
+    public String getNew(Model model) {
+        model.addAttribute("tasks", taskService.findNew());
+        return "tasks/list";
     }
 
     @GetMapping("/create")

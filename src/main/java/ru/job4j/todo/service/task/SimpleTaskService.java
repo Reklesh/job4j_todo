@@ -2,10 +2,10 @@ package ru.job4j.todo.service.task;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.job4j.todo.dispatch.TaskFilterDispatcher;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.repository.task.TaskRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -14,8 +14,6 @@ import java.util.Optional;
 public class SimpleTaskService implements TaskService {
 
     private final TaskRepository repository;
-
-    private final TaskFilterDispatcher taskFilterDispatcher;
 
     @Override
     public Task save(Task task) {
@@ -38,8 +36,18 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Collection<Task> findAll(String filter) {
-        return taskFilterDispatcher.access(filter);
+    public Collection<Task> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Collection<Task> findCompleted() {
+        return repository.findByDone(true);
+    }
+
+    @Override
+    public Collection<Task> findNew() {
+        return repository.findByCreatedAfter(LocalDateTime.now().minusDays(1));
     }
 
     public boolean updateDone(Integer id, boolean isDone) {
