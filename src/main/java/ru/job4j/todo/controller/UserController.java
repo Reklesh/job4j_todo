@@ -29,7 +29,7 @@ public class UserController {
     public String register(@ModelAttribute User user, Model model) {
         var savedUser = userService.save(user);
         if (savedUser.isEmpty()) {
-            model.addAttribute("message", "Пользователь с такой почтой уже существует");
+            model.addAttribute("message", "Пользователь с таким логином уже существует");
             return "errors/404";
         }
         return "redirect:/tasks";
@@ -44,7 +44,7 @@ public class UserController {
     public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
         var userOptional = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (userOptional.isEmpty()) {
-            model.addAttribute("error", "Почта или пароль введены неверно");
+            model.addAttribute("error", "Логин или пароль введены неверно");
             return "users/login";
         }
         var session = request.getSession();
