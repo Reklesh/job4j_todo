@@ -12,6 +12,7 @@
                 <th scope="col">Название</th>
                 <th scope="col">Дата создания</th>
                 <th scope="col">Состояние</th>
+                <th scope="col">Автор</th>
             </tr>
             </thead>
             <tbody>
@@ -26,6 +27,7 @@
                 <td>
                     <span th:text="${task.done} ? 'Выполнено' : 'Не выполнено'"></span>
                 </td>
+                <td th:text="${task.user.name}"/>
             </tr>
             </tbody>
         </table>

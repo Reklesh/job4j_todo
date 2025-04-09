@@ -1,0 +1,1 @@
+alter table tasks add column user_id int NOT NULL references todo_user(id);
