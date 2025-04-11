@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.priority.PriorityService;
 import ru.job4j.todo.service.task.TaskService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 public class TaskController {
 
     private final TaskService taskService;
+    private final PriorityService priorityService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -37,13 +39,20 @@ public class TaskController {
     }
 
     @GetMapping("/create")
-    public String getCreationPage() {
+    public String getCreationPage(Model model) {
+        model.addAttribute("priorities", priorityService.findAll());
         return "tasks/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task, HttpSession session) {
+    public String create(@ModelAttribute Task task, HttpSession session, Model model) {
+        var priorityOptional = priorityService.findById(task.getPriority().getId());
+        if (priorityOptional.isEmpty()) {
+            model.addAttribute("message", "Приоритет с указанным идентификатором не найден");
+            return "errors/404";
+        }
         var user = (User) session.getAttribute("user");
+        task.setPriority(priorityOptional.get());
         task.setUser(user);
         taskService.save(task);
         return "redirect:/tasks";
