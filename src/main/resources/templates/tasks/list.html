@@ -13,6 +13,7 @@
                 <th scope="col">Дата создания</th>
                 <th scope="col">Состояние</th>
                 <th scope="col">Автор</th>
+                <th scope="col">Приоритет задания</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,7 @@
                     <span th:text="${task.done} ? 'Выполнено' : 'Не выполнено'"></span>
                 </td>
                 <td th:text="${task.user.name}"/>
+                <td th:text="${task.priority.name}"/>
             </tr>
             </tbody>
         </table>

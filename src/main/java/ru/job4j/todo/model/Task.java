@@ -5,13 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "tasks")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Entity
+@Table(name = "tasks")
 @EqualsAndHashCode(of = {"id"})
 public class Task {
 
@@ -25,4 +23,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    private Priority priority;
 }
