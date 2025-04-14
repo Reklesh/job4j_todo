@@ -47,26 +47,29 @@ public class HbmTaskRepository implements TaskRepository {
     @Override
     public Optional<Task> findById(Integer id) {
         return crudRepository.optional(
-                "from Task where id = :fId", Task.class,
+                "from Task t JOIN FETCH t.categories WHERE t.id = :fId", Task.class,
                 Map.of("fId", id));
     }
 
     @Override
     public Collection<Task> findAll() {
         return crudRepository.query(
-                "from Task ORDER BY id", Task.class);
+                "select distinct t from Task t JOIN FETCH t.categories ORDER BY t.id", Task.class);
     }
 
     @Override
     public Collection<Task> findByCreatedAfter(LocalDateTime localDateTime) {
         return crudRepository.query(
-                "from Task WHERE created > :fCreated ORDER BY id", Task.class,
+                "select distinct t from Task t JOIN FETCH t.categories WHERE created > :fCreated ORDER BY t.id",
+                Task.class,
                 Map.of("fCreated", localDateTime));
     }
 
     @Override
     public Collection<Task> findByDone(Boolean isDone) {
-        return crudRepository.query("from Task WHERE done = :fDone ORDER BY id", Task.class,
+        return crudRepository.query(
+                "select distinct t from Task t JOIN FETCH t.categories WHERE done = :fDone ORDER BY t.id",
+                Task.class,
                 Map.of("fDone", isDone));
     }
 }

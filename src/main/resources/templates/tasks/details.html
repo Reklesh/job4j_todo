@@ -28,6 +28,14 @@
         <label class="form-label"><b>Приоритет</b></label>
         <div class="form-control" th:text="${task.priority.name}">Приоритет задания</div>
     </div>
+    <div class="mb-3">
+        <label class="form-label"><b>Категории</b></label>
+        <div class="form-control">
+            <span th:each="category, iterStat : ${task.categories}">
+                <span th:text="${category.name + (iterStat.last ? '' : ', ')}"></span>
+            </span>
+        </div>
+    </div>
     <div class="mb-3 row">
         <div class="col-6"></div>
         <div class="col-6">
