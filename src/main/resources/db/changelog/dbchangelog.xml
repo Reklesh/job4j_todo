@@ -15,4 +15,7 @@
     <include file="scripts/007_ddl_create_categories_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/008_ddl_create_task_category_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/009_dml_insert_categories.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/010_ddl_alter_table_todo_user_add_user_zone_column.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/011_ddl_alter_table_tasks_drop_created_column.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/012_ddl_alter_table_tasks_add_created_column.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -25,7 +25,18 @@
                        th:href="@{/tasks/{taskId}(taskId=${task.id})}">
                     </a>
                 </td>
-                <td th:text="${#temporals.format(task.created, 'dd.MM.yyyy HH:mm')}"/>
+
+                <td th:with="userTimezoneId=${task.user.timezone}">
+                    <span th:if="${userTimezoneId == null}"
+                          th:text="${#temporals.format(task.created, 'dd.MM.yyyy HH:mm')}">
+                    </span>
+                    <span th:unless="${userTimezoneId == null}"
+                          th:with="systemZoneId=${T(java.util.TimeZone).getDefault().ID}"
+                          th:text="${#temporals.format(task.created.atZone(T(java.time.ZoneId).of(systemZoneId))
+                          .withZoneSameInstant(T(java.time.ZoneId).of(userTimezoneId)), 'dd.MM.yyyy HH:mm')}">
+                    </span>
+                </td>
+
                 <td>
                     <span th:text="${task.done} ? 'Выполнено' : 'Не выполнено'"></span>
                 </td>

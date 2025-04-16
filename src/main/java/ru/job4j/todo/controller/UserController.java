@@ -1,8 +1,5 @@
 package ru.job4j.todo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TimeZone;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -21,7 +24,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/register")
-    public String getRegistrationPage() {
+    public String getRegistrationPage(Model model) {
+        List<TimeZone> zones = Arrays.stream(TimeZone.getAvailableIDs())
+                .map(TimeZone::getTimeZone)
+                .toList();
+        model.addAttribute("zones", zones);
         return "users/register";
     }
 

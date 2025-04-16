@@ -12,12 +12,21 @@
         <label class="form-label"><b>Описание</b></label>
         <div class="form-control" th:text="${task.description}">Описание задачи</div>
     </div>
+
     <div class="mb-3">
         <label class="form-label"><b>Дата создания</b></label>
-        <div class="form-control"
-             th:text="${#temporals.format(task.created, 'dd.MM.yyyy HH:mm')}">Дата создания задачи
+        <div class="form-control" th:with="userTimezoneId=${task.user.timezone}">
+            <span th:if="${userTimezoneId == null}"
+                  th:text="${#temporals.format(task.created, 'dd.MM.yyyy HH:mm')}">
+            </span>
+            <span th:unless="${userTimezoneId == null}"
+                  th:with="systemZoneId=${T(java.util.TimeZone).getDefault().ID}"
+                  th:text="${#temporals.format(task.created.atZone(T(java.time.ZoneId).of(systemZoneId))
+                          .withZoneSameInstant(T(java.time.ZoneId).of(userTimezoneId)), 'dd.MM.yyyy HH:mm')}">
+            </span>
         </div>
     </div>
+
     <div class="mb-3">
         <label class="form-label"><b>Состояние</b></label>
         <div class="form-control">
